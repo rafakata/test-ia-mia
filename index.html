@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Simulador tipo test para repasar fundamentos, historia y técnicas de Inteligencia Artificial.">
+  <meta name="theme-color" content="#0b6b61">
+  <title>Repaso MIA · Test de Inteligencia Artificial</title>
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Volver al inicio">
+      <svg class="brand-mark" aria-hidden="true" viewBox="0 0 40 40" fill="none">
+        <path d="M8 27V13l12-7 12 7v14l-12 7-12-7Z" stroke="currentColor" stroke-width="2.5"/>
+        <path d="m14 23 6-10 6 10M16.5 19h7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span><strong>Repaso MIA</strong><small>Modelos de IA</small></span>
+    </a>
+    <button class="icon-button" type="button" data-theme-toggle aria-label="Activar modo oscuro" title="Cambiar tema">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+    </button>
+  </header>
+
+  <main id="main" class="app-shell">
+    <section id="setup-screen" class="screen setup-screen" aria-labelledby="setup-title">
+      <div class="intro-block">
+        <p class="eyebrow">Banco de 60 preguntas</p>
+        <h1 id="setup-title">Entrena como si fuera el examen</h1>
+        <p>Preguntas y opciones cambian de orden en cada intento. Recibirás corrección y explicación justo después de responder.</p>
+      </div>
+
+      <form id="setup-form" class="setup-card">
+        <fieldset>
+          <legend>Número de preguntas</legend>
+          <div class="segmented-control">
+            <label><input type="radio" name="question-count" value="20" checked><span><strong>20</strong> Simulacro</span></label>
+            <label><input type="radio" name="question-count" value="60"><span><strong>60</strong> Repaso completo</span></label>
+          </div>
+        </fieldset>
+
+        <div class="form-field">
+          <label for="penalty">Penalización por fallo</label>
+          <select id="penalty" name="penalty">
+            <option value="0.33" selected>−0,33 puntos</option>
+            <option value="0.25">−0,25 puntos</option>
+            <option value="0.5">−0,50 puntos</option>
+            <option value="0">Sin penalización</option>
+          </select>
+          <p class="helper">Ajusta este valor al criterio exacto de tu examen.</p>
+        </div>
+
+        <div class="feature-list" aria-label="Características del test">
+          <p><span class="status-dot"></span> 4 opciones por pregunta</p>
+          <p><span class="status-dot"></span> Corrección inmediata</p>
+          <p><span class="status-dot"></span> Orden aleatorio real</p>
+        </div>
+
+        <button class="button button-primary button-large" type="submit">Comenzar test</button>
+      </form>
+    </section>
+
+    <section id="quiz-screen" class="screen quiz-screen" hidden aria-labelledby="question-title">
+      <div class="quiz-status">
+        <div class="progress-copy"><span id="progress-label">Pregunta 1 de 20</span><span id="live-score">0 aciertos · 0 fallos</span></div>
+        <div class="progress-track" role="progressbar" aria-label="Progreso del test" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progress-bar"></span></div>
+      </div>
+
+      <article class="question-card">
+        <div class="question-meta">
+          <span id="question-category" class="badge">Fundamentos</span>
+          <span class="keyboard-hint">Teclas 1–4 para responder</span>
+        </div>
+        <h1 id="question-title">Pregunta</h1>
+        <div id="options" class="options" role="group" aria-labelledby="question-title"></div>
+        <div id="feedback" class="feedback" hidden aria-live="polite"></div>
+        <div class="question-actions">
+          <button id="quit-button" class="button button-ghost" type="button">Salir</button>
+          <button id="next-button" class="button button-primary" type="button" hidden>Siguiente pregunta</button>
+        </div>
+      </article>
+    </section>
+
+    <section id="result-screen" class="screen result-screen" hidden aria-labelledby="result-title">
+      <div class="result-card">
+        <p class="eyebrow">Intento completado</p>
+        <h1 id="result-title">Resultado</h1>
+        <div class="grade-ring" id="grade-ring" aria-label="Nota obtenida"><strong id="grade">0,0</strong><span>sobre 10</span></div>
+        <div class="stats-grid">
+          <div><strong id="correct-stat">0</strong><span>Correctas</span></div>
+          <div><strong id="wrong-stat">0</strong><span>Incorrectas</span></div>
+          <div><strong id="points-stat">0</strong><span>Puntos netos</span></div>
+        </div>
+        <p id="result-message" class="result-message"></p>
+        <div class="result-actions">
+          <button id="retry-button" class="button button-primary" type="button">Nuevo intento</button>
+          <button id="mistakes-button" class="button button-secondary" type="button">Repasar fallos</button>
+        </div>
+      </div>
+      <section id="mistakes-review" class="mistakes-review" hidden aria-labelledby="mistakes-title">
+        <div class="review-heading"><h2 id="mistakes-title">Tus fallos</h2><span id="mistakes-count" class="badge"></span></div>
+        <div id="mistakes-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer><p>Contenido elaborado a partir de los tres documentos del temario · Funciona sin backend</p></footer>
+
+  <dialog id="quit-dialog">
+    <form method="dialog" class="dialog-card">
+      <h2>¿Salir del intento?</h2>
+      <p>El progreso actual se perderá.</p>
+      <div class="dialog-actions"><button class="button button-ghost" value="cancel">Continuar</button><button id="confirm-quit" class="button button-danger" value="confirm">Salir</button></div>
+    </form>
+  </dialog>
+</body>
+</html>
